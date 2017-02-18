@@ -29,7 +29,7 @@ STATICFILES_DIRS = (
 
 
 TEMPLATE_DIRS = (
-   os.path.join(BASE_DIR, 'admin\\templates').replace('\\', '/')
+   os.path.join(BASE_DIR, 'admin\\templates').replace('\\', '/'),
 )
 
 TEMPLATE_DEBUG = True
@@ -42,7 +42,9 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
-    'commonlib'
+    'django.contrib.auth',
+    'commonlib',
+    'policy',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -96,3 +98,7 @@ CACHES = {
         'LOCATION': '127.0.0.1:11211',
     }
 }
+
+DATE_FORMAT = "Y-m-d"
+
+USE_L10N = False

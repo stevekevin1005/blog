@@ -19,9 +19,11 @@ class Post(models.Model):
         db_table = "post_tab"
 
     title = models.CharField(max_length = 200)
+    description = models.CharField(max_length = 200)
     text = models.TextField()
     location = models.CharField(max_length = 200)
-    user_id = models.IntegerField();
+    user_id = models.IntegerField()
+    date = models.DateField()
     create_date = models.DateTimeField(default = timezone.now)
     update_date = models.DateTimeField(default = timezone.now)
 
