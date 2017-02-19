@@ -1,3 +1,4 @@
 blog/settings.py
 admin/upload/*
+log/*
 *.pyc

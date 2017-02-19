@@ -33,7 +33,7 @@ class Photo(models.Model):
         db_table = "photo_tab"
 
     url = models.TextField()
-    post_id = models.IntegerField();
+    post_id = models.IntegerField()
     create_date = models.DateTimeField(default = timezone.now)
     update_date = models.DateTimeField(default = timezone.now)
         
@@ -44,7 +44,8 @@ class Comment(models.Model):
         db_table = "comment_tab"
 
     text = models.TextField()
-    post_id = models.IntegerField();
+    post_id = models.IntegerField()
+    user_id = models.IntegerField()
     create_date = models.DateTimeField(default = timezone.now)
     update_date = models.DateTimeField(default = timezone.now)
 
@@ -54,7 +55,7 @@ class Like(models.Model):
         db_table = "like_tab"
 
     post_id = models.IntegerField()
-    user_id = models.IntegerField();
+    user_id = models.IntegerField()
     create_date = models.DateTimeField(default = timezone.now)
     update_date = models.DateTimeField(default = timezone.now)
 
@@ -64,7 +65,7 @@ class Participate(models.Model):
         db_table = "participate_tab"
 
     post_id = models.IntegerField()
-    user_id = models.IntegerField();
+    user_id = models.IntegerField()
     create_date = models.DateTimeField(default = timezone.now)
     update_date = models.DateTimeField(default = timezone.now)
         

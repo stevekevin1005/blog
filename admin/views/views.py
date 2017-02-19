@@ -1,14 +1,15 @@
-# trips/views.py
-
 from django.shortcuts import render, redirect
 from django.template import loader, Context
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from commonlib.models import User,Post,Photo
 from django.core.cache import cache
 from policy.login import cookies_login
-import hashlib
-import time
+import hashlib, logging, time
  
+logger = logging.getLogger(__name__)
+
+def notDefinedUrl(request):
+	return redirect('/login')
 
 def login(request):
 
@@ -27,7 +28,7 @@ def login(request):
 		if account_info != None and password == account_info.password:
 			hash_account = hashlib.md5(account)
 
-			cache.set(hash_account.hexdigest(), account_info, 30)
+			cache.set(hash_account.hexdigest(), account_info, 300)
 			response = HttpResponseRedirect('/admin/')
 			response.set_cookie('token', hash_account.hexdigest())
 			return response
@@ -58,14 +59,14 @@ def newPost(request):
 		return render(request, 'post_detail.html' )
 	else:
 
-		user_id = 1
+		user_dict = cache.get(request.COOKIES['token'])
 	
 		post = Post()
 		post.title = request.POST.get('title')
 		post.description = request.POST.get('description')
 		post.text = request.POST.get('text')
 		post.location = request.POST.get('location')
-		post.user_id = user_id
+		post.user_id = user_dict.id
 		post.date = request.POST.get('date')
 		post.save()
 
@@ -79,7 +80,7 @@ def newPost(request):
 			local_name = str(time.time()) + '.gif'
 		else:
 			return redirect(request.META().get('HTTP_REFERER', '/'))
-		F = open('admin/upload/'+local_name, 'wb')
+		F = open(local_name, 'wb')
 		for line in image_data:
 			F.write(line)
 		F.close()
@@ -94,8 +95,12 @@ def newPost(request):
 @cookies_login
 def postDetail(request, id):
 	post = Post.objects.get(id=id)
+	photo_list = Photo.objects.filter(post_id=post.id)
+	logger.info('Something went wrong2!')
+	logger.error('Something went wrong3!')
 	return render(request, 'post_detail.html', {
-		'post': post
+		'post': post,
+		'photo_list': photo_list
 	})
 
 @cookies_login

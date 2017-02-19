@@ -25,14 +25,32 @@ DEBUG = True
 STATIC_URL= 'admin/static/'
 STATICFILES_DIRS = (
     "admin/static",
+    "admin/upload",
 )
 
 
-TEMPLATE_DIRS = (
-   os.path.join(BASE_DIR, 'admin\\templates').replace('\\', '/'),
-)
-
-TEMPLATE_DEBUG = True
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(BASE_DIR, 'admin\\templates').replace('\\', '/'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
+                # list if you haven't customized them:
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 ALLOWED_HOSTS = []
 
@@ -97,6 +115,25 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': '127.0.0.1:11211',
     }
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'DEBUG': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(os.path.dirname(BASE_DIR), 'blog/log/debug.log'),
+        }
+    },
+    'loggers': {
+        '': {
+            'handlers': ['DEBUG'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
 }
 
 DATE_FORMAT = "Y-m-d"
