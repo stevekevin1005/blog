@@ -31,6 +31,9 @@ def login(request):
 			cache.set(hash_account.hexdigest(), account_info, 300)
 			response = HttpResponseRedirect('/admin/')
 			response.set_cookie('token', hash_account.hexdigest())
+
+			logger.info(account_info.name+" login at "+time.strftime("%d/%m/%Y %H:%M:%S"))
+
 			return response
 		else:
 			return render(request, 'login.html', {'err_msg': 'password or account error',})
@@ -80,13 +83,13 @@ def newPost(request):
 			local_name = str(time.time()) + '.gif'
 		else:
 			return redirect(request.META().get('HTTP_REFERER', '/'))
-		F = open(local_name, 'wb')
+		F = open('/admin/upload/' + local_name, 'wb')
 		for line in image_data:
 			F.write(line)
 		F.close()
 
 		photo = Photo()
-		photo.url = '/admin/upload/' + local_name
+		photo.url = local_name
 		photo.post_id = post.id
 		photo.save()
 
@@ -96,8 +99,7 @@ def newPost(request):
 def postDetail(request, id):
 	post = Post.objects.get(id=id)
 	photo_list = Photo.objects.filter(post_id=post.id)
-	logger.info('Something went wrong2!')
-	logger.error('Something went wrong3!')
+
 	return render(request, 'post_detail.html', {
 		'post': post,
 		'photo_list': photo_list

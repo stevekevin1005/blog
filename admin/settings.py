@@ -22,11 +22,7 @@ SECRET_KEY = 'wqp#nf$*98p5(*$oztg$tw^&(k0as(0nx48$jbyqv39_l1#pq5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
  
-STATIC_URL= 'admin/static/'
-STATICFILES_DIRS = (
-    "admin/static",
-    "admin/upload",
-)
+
 
 
 TEMPLATES = [
@@ -107,6 +103,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    "admin/upload",
+    "admin/static",
+)
 
 # Caches
 
