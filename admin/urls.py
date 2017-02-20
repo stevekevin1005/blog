@@ -20,5 +20,5 @@ urlpatterns = [
     url(r'^api/post/(?P<id>\d+)/participate$', api.participate),
     url(r'^api/post/(?P<id>\d+)/comment$', api.participate),
 
-    url(r'^.*$', views.notDefinedUrl),
+    # url(r'^.*$', views.notDefinedUrl),
 ]

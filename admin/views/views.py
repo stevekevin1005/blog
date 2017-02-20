@@ -116,7 +116,32 @@ def postUpdate(request, id):
 	post.date = request.POST.get('date')
 	post.save()
 
-	return redirect('/admin/post/'+id+'/')
+	image_data = request.FILES.get('image')
+	if image_data:
+		if image_data.name.endswith('.jpg'):
+			local_name = str(time.time()) + '.jpg'
+		elif image_data.name.endswith('.png'):
+			local_name = str(time.time()) + '.png'
+		elif image_data.name.endswith('.gif'):
+			local_name = str(time.time()) + '.gif'
+		else:
+			return redirect(request.META().get('HTTP_REFERER', '/'))
+		F = open('admin/upload/'+local_name, 'wb')
+		for line in image_data:
+			F.write(line)
+		F.close()
+
+		photo, created = Photo.objects.get_or_create(post_id=id)
+
+		if not created:
+			photo.delete()
+
+			photo = Photo()
+			photo.url = local_name
+			photo.post_id = post.id
+			photo.save()
+
+	return redirect('/admin/post/'+id)
 
 @cookies_login
 def postDelete(request, id):
