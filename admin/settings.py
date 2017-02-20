@@ -22,17 +22,31 @@ SECRET_KEY = 'wqp#nf$*98p5(*$oztg$tw^&(k0as(0nx48$jbyqv39_l1#pq5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
  
-STATIC_URL= 'admin/static/'
-STATICFILES_DIRS = (
-    "admin/static",
-)
 
 
-TEMPLATE_DIRS = (
-   os.path.join(BASE_DIR, 'admin\\templates').replace('\\', '/')
-)
 
-TEMPLATE_DEBUG = True
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(BASE_DIR, 'admin\\templates').replace('\\', '/'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
+                # list if you haven't customized them:
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 ALLOWED_HOSTS = []
 
@@ -42,7 +56,9 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
-    'commonlib'
+    'django.contrib.auth',
+    'commonlib',
+    'policy',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -88,6 +104,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (
+    "admin/upload",
+    "admin/static",
+)
+
 # Caches
 
 CACHES = {
@@ -96,3 +117,26 @@ CACHES = {
         'LOCATION': '127.0.0.1:11211',
     }
 }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'DEBUG': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(os.path.dirname(BASE_DIR), 'blog/log/debug.log'),
+        }
+    },
+    'loggers': {
+        '': {
+            'handlers': ['DEBUG'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
+DATE_FORMAT = "Y-m-d"
+
+USE_L10N = False

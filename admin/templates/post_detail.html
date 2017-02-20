@@ -1,0 +1,73 @@
+{% extends "layout.html" %} 
+{% block content %}
+{% load staticfiles %}
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                {{ post.title }}
+            </header>
+            <div class="panel-body">
+                <form action={% if post.id %}"/admin/post/edit/{{post.id}}"{% else %} "/admin/post/new"{% endif %} class="form-horizontal" method="post" enctype="multipart/form-data">
+                	{% csrf_token %}
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Title</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="title" class="form-control" value="{{ post.title }}" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Description</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="description" class="form-control" value="{{ post.description }}" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Detail</label>
+                        <div class="col-sm-10">
+                        	<textarea name="text" class="form-control">{{ post.text }}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Location</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="location" class="form-control" value="{{ post.location }}" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Date</label>
+                        <div class="col-sm-10">
+                            <input type="date" name="date" class="form-control" value='{{ post.date }}'>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Image</label>
+                        {% if photo_list %}
+                        {% for photo in photo_list%}
+                        <div class="col-sm-6">
+                            <img src="{% static photo.url %}" width="200" height="200">
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="file" name="image" class="form-control" required>
+                            <span>jpg, png, gif</span>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <div class="col-sm-10">
+                            <input type="file" name="image" class="form-control" required>
+                            <span>jpg, png, gif</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-10">
+                            <input type="submit" class="form-control">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
